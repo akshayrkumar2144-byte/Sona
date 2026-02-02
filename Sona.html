@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sona 💖</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: pink;
+      font-family: "Comic Sans MS", cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: #b30059;
+      margin-bottom: 60px;
+      text-align: center;
+    }
+
+    #yesBtn {
+      padding: 20px 50px;
+      font-size: 1.8rem;
+      background: #ff4da6;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-right: 40px;
+    }
+
+    #noBtn {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background: #ff99cc;
+      color: #660033;
+      border: none;
+      border-radius: 12px;
+      position: absolute;
+      cursor: pointer;
+    }
+
+    #buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    #message {
+      display: none;
+      font-size: 3rem;
+      color: #800040;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="question">Will you be my Valentine Sona🥇??</h1>
+
+  <div id="buttons">
+    <button id="yesBtn">Yes</button>
+  </div>
+
+  <button id="noBtn">No</button>
+
+  <div id="message">Finally got you to say Yes 🥇</div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const SAFE_DISTANCE = 180;
+
+    // Initial NO position
+    moveNoRandom();
+
+    document.addEventListener("mousemove", (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const btnX = rect.left + rect.width / 2;
+      const btnY = rect.top + rect.height / 2;
+
+      const dx = btnX - e.clientX;
+      const dy = btnY - e.clientY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < SAFE_DISTANCE) {
+        moveNoOpposite(dx, dy);
+      }
+    });
+
+    function moveNoOpposite(dx, dy) {
+      const angle = Math.atan2(dy, dx);
+
+      const moveX = Math.cos(angle) * 250;
+      const moveY = Math.sin(angle) * 250;
+
+      let newX = noBtn.offsetLeft + moveX;
+      let newY = noBtn.offsetTop + moveY;
+
+      // Keep inside screen
+      newX = Math.max(0, Math.min(window.innerWidth - noBtn.offsetWidth, newX));
+      newY = Math.max(0, Math.min(window.innerHeight - noBtn.offsetHeight, newY));
+
+      noBtn.style.left = newX + "px";
+      noBtn.style.top = newY + "px";
+    }
+
+    function moveNoRandom() {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    document.getElementById("yesBtn").onclick = () => {
+      document.getElementById("question").style.display = "none";
+      document.getElementById("buttons").style.display = "none";
+      noBtn.style.display = "none";
+      document.getElementById("message").style.display = "block";
+    };
+  </script>
+
+</body>
+</html>
